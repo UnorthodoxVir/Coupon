@@ -1,0 +1,583 @@
+﻿@model Coupon.ViewModel.CouponsViewModel
+
+
+<script src="~/js/re.js"></script>
+
+<div class="row card">
+
+    <div class="col-md-12 p-4">
+        <form class="row g-3" asp-action="Index">
+            <div class="col-4">
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <select asp-for="DiscountType" id="branch" class="select-single js-states" asp-items="Html.GetEnumSelectList<Coupon.Models.Enum.DiscountType>()">
+                                <option selected value="0">الكل</option>
+                            </select>
+                            <div class="field-placeholder">نوع المركز</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <select asp-for="City" id="branch" class="select-single js-states" asp-items="Html.GetEnumSelectList<Coupon.Models.Enum.City>()">
+                                <option selected value="78">الكل</option>
+                            </select>
+                            <div class="field-placeholder">المدينة</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input type="submit" value="تصفية" class="btn btn-secondary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="row">
+    @foreach (var item in Model.CouponCards)
+    {
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="dl">
+                <div class="brand">
+                    <h2>
+                        شركة @item.CompCoupon.Company.Name
+                    </h2>
+                </div>
+
+                @if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.مغاسل)
+                {
+                    <div class="discount peter-river">
+                        @item.CompCoupon.Discount%
+                        <div class="type">
+                            خصم مغاسل
+                        </div>
+                    </div>
+                }
+                else if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.ورش)
+                {
+                    <div class="discount amethyst">
+                        @item.CompCoupon.Discount%
+                        <div class="type">
+                            خصم ورش
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="discount emerald">
+                        @item.CompCoupon.Discount%
+                        <div class="type">
+                            خصم تلميع
+                        </div>
+                    </div>
+                }
+                <div class="descr text-center">
+                    <h5>
+                        مكان المركز: @System.Enum.GetName(typeof(Coupon.Models.Enum.City), item.CompCoupon.Company.City)
+                    </h5>
+                    <h3>
+                        الكوبون ساري حتى
+                    </h3>
+                    <h3>
+                        @item.CompCoupon.ExpireDate.Day / @item.CompCoupon.ExpireDate.Month / @item.CompCoupon.ExpireDate.Year
+                    </h3>
+
+                </div>
+                <div class="ends">
+                    <small>
+                        * Conditions and restrictions apply.
+                    </small>
+                </div>
+
+                <a onclick=GetItem("@item.Id")>
+                    <div class="coupon midnight-blue">
+                        الحصول على الرمز
+
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    }
+</div>
+
+
+
+<script>
+
+    function GetItem(id) {
+
+        $("#catModal").modal("show")
+        $("#couponAddress").val(id)
+    }
+
+
+
+
+
+    $(document).ready(function() {
+
+
+        $("#btnCreate").click(function() {
+
+            if ($("#txtName").val() == "" || $("#txtPhone").val() == "" || $("#txtEmail").val() == "" || $("#txtPlatenumber").val() == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'أحد الحقول فارغة',
+                })
+
+                return
+            }
+
+            if ($("#txtPhone").val().length != 12 || !isNaN($("#txtPhone").val()) == false) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'رقم الجوال المدخل غير صحيح, تأكد من الطريقة الصحيحة',
+                })
+                return
+            }
+
+            if (validateEmail($("#txtEmail").val()) == false) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'البريد الالكتروني المدخل غير صحيح',
+                })
+                return
+            }
+
+            var model = JSON.stringify({
+                phoneNumber: $("#txtPhone").val()
+            })
+
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                url: "/Customers/CheckPhoneNumber",
+                type: 'POST',
+                data: model,
+                dataType: "Json",
+                success: function(data) {
+                    if (data.isUsed) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'رقم الجوال مستعمل سابقا',
+                        })
+                    }
+                    else {
+                        var model = JSON.stringify({
+
+                            name: $("#txtName").val(),
+                            phoneNumber: $("#txtPhone").val(),
+                            email: $("#txtEmail").val(),
+                            city: $("#city").val(),
+                            vehicle: $("#brandName").val() + " " + $("#carName").val(),
+                            plateNumber: $("#txtPlatenumber").val(),
+                            model: $("#txtModel").val(),
+                            usedCoupon: $("#couponAddress").val()
+                            //END OF VAR MODEL
+                        })
+
+
+                        $.ajax({
+                            contentType: "application/json; charset=utf-8",
+                            url: "/Customers/Create",
+                            type: "POST",
+                            data: model,
+                            dataType: "Json",
+                            beforeSend: function() {
+                                Swal.fire({
+                                    icon: 'info',
+                                    html: 'يتم حفظ المعلومات',
+                                    showConfirmButton: false
+                                })
+                            },
+                            success: function() {
+
+                                $("#catModal").modal("hide")
+                                $('#catModal').on('hidden.bs.modal', function() {
+                                    $('#OTPModal').modal('show')
+                                })
+                                //END OF SUCCESS
+                            },
+                            error: function() { }
+                            //END OF AJAX REQUEST
+                        })
+                    }
+                    //END OF SUCCESS AJAX
+                }
+            })
+
+
+
+
+            //END OF .CLICK()
+        })
+
+
+        $("#btnOTP").click(function() {
+
+
+            var otp = JSON.stringify({
+                code: $("#txtOTP").val()
+            })
+
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                url: "/Customers/SubmitOTP",
+                type: "POST",
+                data: otp,
+                dataType: "Json",
+                beforeSend: function() {
+                    Swal.fire({
+                        icon: 'info',
+                        html: 'جاري التحقق من الرمز',
+                        showConfirmButton: false
+                    })
+                },
+                success: function(data) {
+
+                    if (data.isValid) {
+
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تهانينا!',
+                            text: 'تم التحقق من جوالك وسوف يتم ارسال رمز الكوبون على رقم نفس الرقم',
+                            showConfirmButton: false,
+                            timer: 5000
+                        })
+                    }
+                    else {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'رمز التحقق المدخل غير صحيح, حاول مجددا',
+                        })
+
+                    }
+
+                },
+                error: function() { }
+                //END OF AJAX REQUEST
+            })
+
+        })
+
+        //END OF $(DOCUMENT).READY()
+    })
+
+
+
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="catModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">قبل الحصول على الرمز, فضلا أدخل معلوماتك</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form class="row g-3" asp-action="Index" method="post">
+
+                    <input id="couponAddress" hidden />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input id="txtName" class="form-control" type="text" name="Code" value="">
+                            <div class="field-placeholder">الاسم</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-lg-6 col-6">
+                        <div class="field-wrapper">
+                            <input id="txtPhone" placeholder="966 5 XXX XXXX" class="form-control" type="text" name="Code" value="">
+                            <div class="field-placeholder">رقم الجوال</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-lg-6 col-6">
+                        <div class="field-wrapper">
+                            <input id="txtEmail" placeholder="example@example.com" class="form-control" type="text" name="Code" value="">
+                            <div class="field-placeholder">البريد الالكتروني</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <select id="city" class="select-single js-states" asp-items="Html.GetEnumSelectList<Coupon.Models.Enum.City>()"></select>
+                            <div class="field-placeholder">المدينة</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-lg-6 col-6">
+                        <div class="field-wrapper">
+                            <select id="carName" class="select-single js-states">
+                                <option>Suburban</option>
+                                <option>M5</option>
+                            </select>
+                            <div class="field-placeholder">اسم السيارة</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-lg-6 col-6">
+                        <div class="field-wrapper">
+                            <select id="brandName" class="select-single js-states">
+                                <option>GMC</option>
+                                <option>BMW</option>
+                            </select>
+                            <div class="field-placeholder">ماركة السيارة</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-lg-6 col-6">
+                        <div class="field-wrapper">
+                            <input id="txtPlatenumber" placeholder="ح س ر 8849" class="form-control" type="text" name="Code" value="">
+                            <div class="field-placeholder">رقم اللوحة</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-lg-6 col-6">
+                        <div class="field-wrapper">
+                            <select id="txtModel">
+                                <option>1990</option>
+                                <option>1991</option>
+                                <option>1992</option>
+                                <option>1993</option>
+                                <option>1994</option>
+                                <option>1995</option>
+                                <option>1996</option>
+                                <option>1997</option>
+                                <option>1998</option>
+                                <option>1999</option>
+                                <option>2000</option>
+                                <option>2001</option>
+                                <option>2002</option>
+                                <option>2003</option>
+                                <option>2004</option>
+                                <option>2005</option>
+                                <option>2006</option>
+                                <option>2007</option>
+                                <option>2008</option>
+                                <option>2009</option>
+                                <option>2010</option>
+                                <option>2011</option>
+                                <option>2012</option>
+                                <option>2013</option>
+                                <option>2014</option>
+                                <option>2015</option>
+                                <option>2016</option>
+                                <option>2017</option>
+                                <option>2018</option>
+                                <option>2019</option>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                            </select>
+                            <div class="field-placeholder">الموديل</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">الغاء</button>
+                    <button id="btnCreate" type="button" class="btn btn-primary">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="OTPModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">الرجاء ادخال رمز التحقق المرسل على جوالك</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form class="row g-3" asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input id="txtOTP" class="form-control" type="text" name="Code" value="">
+                            <div class="field-placeholder">رمز التحقق</div>
+                        </div>
+                        <span class="text-danger"></span>
+                    </div>
+
+                </form>
+                <div class="modal-footer">
+                    <button id="btnOTP" type="button" class="btn btn-primary">الحصول على الرمز</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+
+    section {
+        padding: 5% 0
+    }
+
+    .alizarin {
+        background: #e74c3c
+    }
+
+    .amethyst {
+        background: #9b59b6
+    }
+
+    .emerald {
+        background: #3da76a
+    }
+
+    .midnight-blue {
+        background: #2c3e50;
+        color: white
+    }
+
+    .peter-river {
+        background: #3498db
+    }
+
+    .dl {
+        background: #dedeef /*#d4d4dd*/;
+        padding: 30px 0;
+        border-radius: 20px;
+        position: relative;
+        margin: 5px;
+    }
+
+        .dl:before {
+            content: " ";
+            height: 20px;
+            width: 20px;
+            background: #efeff7;
+            border-radius: 20px;
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            margin-left: -10px
+        }
+
+        .dl .brand {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            text-align: center;
+            min-height: 100px
+        }
+
+        .dl .discount {
+            min-height: 50px;
+            position: relative;
+            font-size: 55px;
+            line-height: 80px;
+            text-align: center;
+            font-weight: 700;
+            padding: 20px 15px 0;
+            color: #f1c40f
+        }
+
+            .dl .discount:after {
+                content: " ";
+                border-right: 20px solid transparent;
+                border-left: 20px solid transparent;
+                position: absolute;
+                bottom: -20px;
+                left: 20%
+            }
+
+            .dl .discount.alizarin:after {
+                border-top: 20px solid #e74c3c
+            }
+
+            .dl .discount.peter-river:after {
+                border-top: 20px solid #3498db
+            }
+
+            .dl .discount.emerald:after {
+                border-top: 20px solid #2ecc71
+            }
+
+            .dl .discount.amethyst:after {
+                border-top: 20px solid #9b59b6
+            }
+
+            .dl .discount .type {
+                font-size: 20px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-top: -30px
+            }
+
+        .dl .descr {
+            color: #000;
+            margin-top: 10px;
+            padding: 20px 15px
+        }
+
+        .dl .ends {
+            padding: 0 15px;
+            color: #f1c40f;
+            margin-bottom: 10px
+        }
+
+        .dl .coupon {
+            min-height: 50px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 20px 15px
+        }
+
+            .dl .coupon a.open-code {
+                color: #ffffff
+            }
+
+            .dl .coupon .code {
+                letter-spacing: 1px;
+                border-radius: 4px;
+                margin-top: 10px;
+                padding: 10px 15px;
+                color: #f1c40f;
+                background: #f0f0f0
+            }
+</style>
+
