@@ -35,7 +35,7 @@ namespace Coupon.Controllers
         public ActionResult Index(int? City, int? DiscountType)
         {
             var model = new CouponsViewModel();
-            model.CouponCards = _couponCardsRepository.List().Where(o=>o.Used == false).ToList();
+            model.CouponCards = _couponCardsRepository.List().ToList();
 
             foreach (var coupon in model.CouponCards)
             {
@@ -53,6 +53,8 @@ namespace Coupon.Controllers
                 model.CouponCards = model.CouponCards.Where(o=>(int)o.CompCoupon.DiscountType == DiscountType).ToList();
             }
 
+
+            model.CouponCards = model.CouponCards.OrderBy(o => o.Used).ToList();
 
 
             return View(model);

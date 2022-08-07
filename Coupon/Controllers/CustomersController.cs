@@ -97,14 +97,14 @@ namespace Coupon.Controllers
                 var customer = _customersRepository.Get(otp.CustomerId);
                 var coupon = _cardsRepository.Get(customer.UsedCoupon);
                 var CompanyName = _companyRepository.Get(_compCouponsRepository.List().Where(o => o.Id == coupon.CouponId).FirstOrDefault().CompId).Name;
-
+                var code = coupon.Code;
                 otp.isUsed = true;
 
                 _OTPRepository.Update(otp);
 
                 _smsService.sendMsg(customer.Name, coupon.Code, customer.PhoneNumber, CompanyName);
 
-                return Json(new { success = true, isValid = true });
+                return Json(new { success = true, isValid = true, code = code });
             }
             else
             {

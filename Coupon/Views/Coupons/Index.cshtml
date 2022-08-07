@@ -7,8 +7,7 @@
 
     <div class="col-md-12 p-4">
         <form class="row g-3" asp-action="Index">
-            <div class="col-4">
-            </div>
+
 
 
             <div class="col-md-3">
@@ -58,13 +57,16 @@
     {
         <div class="col-sm-12 col-md-4 col-lg-4">
             <div class="dl">
+                <span class="avatar brand">
+                    <img src="~/images/@item.CompCoupon.Company.Logo" class="rounded mx-auto d-block" height="50" width="100">
+                </span>
                 <div class="brand">
                     <h2>
                         شركة @item.CompCoupon.Company.Name
                     </h2>
                 </div>
 
-                @if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.مغاسل)
+                @if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.مغاسل && !item.Used)
                 {
                     <div class="discount peter-river">
                         @item.CompCoupon.Discount%
@@ -73,7 +75,7 @@
                         </div>
                     </div>
                 }
-                else if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.ورش)
+                else if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.ورش && !item.Used)
                 {
                     <div class="discount amethyst">
                         @item.CompCoupon.Discount%
@@ -82,12 +84,21 @@
                         </div>
                     </div>
                 }
-                else
+                else if (item.CompCoupon.DiscountType == Coupon.Models.Enum.DiscountType.تلميع && !item.Used)
                 {
                     <div class="discount emerald">
                         @item.CompCoupon.Discount%
                         <div class="type">
-                            خصم تلميع
+                            تم استعماله
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="discount used text-muted">
+                        @item.CompCoupon.Discount%
+                        <div class="type">
+                            تم استعماله
                         </div>
                     </div>
                 }
@@ -109,12 +120,22 @@
                     </small>
                 </div>
 
-                <a onclick=GetItem("@item.Id")>
-                    <div class="coupon midnight-blue">
-                        الحصول على الرمز
+                @if (!item.Used)
+                {
+                    <a onclick=GetItem("@item.Id")>
+                        <div class="coupon midnight-blue">
+                            الحصول على الرمز
+
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <div class="coupon midnight-blue text-muted">
+                        الرمز مستعمل
 
                     </div>
-                </a>
+                }
 
             </div>
         </div>
@@ -136,6 +157,7 @@
 
 
     $(document).ready(function() {
+
 
 
         $("#btnCreate").click(function() {
@@ -215,7 +237,7 @@
                                 })
                             },
                             success: function() {
-
+                                Swal.close()
                                 $("#catModal").modal("hide")
                                 $('#catModal').on('hidden.bs.modal', function() {
                                     $('#OTPModal').modal('show')
@@ -264,8 +286,8 @@
 
                         Swal.fire({
                             icon: 'success',
-                            title: 'تهانينا!',
-                            text: 'تم التحقق من جوالك وسوف يتم ارسال رمز الكوبون على رقم نفس الرقم',
+                            title: '🎉 تهانينا ',
+                            text: 'تم التحقق من رقم جوالك وسيتم ارسال رمز الكوبون عليه',
                             showConfirmButton: false,
                             timer: 5000
                         })
@@ -465,6 +487,10 @@
         background: #3da76a
     }
 
+    .used {
+        background: #d14141
+    }
+
     .midnight-blue {
         background: #2c3e50;
         color: white
@@ -498,7 +524,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             padding: 10px 15px;
-            margin-top: 10px;
+            margin-top: 0px;
             text-align: center;
             min-height: 100px
         }

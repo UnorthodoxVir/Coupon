@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,7 +13,6 @@
     <!-- Title -->
     <title>كفاءة - الكوبونات</title>
 
-
     <!-- Bootstrap Select CSS -->
     <link rel="stylesheet" href="~/vendor/bs-select/bs-select.css" />
 
@@ -22,27 +21,34 @@
         ************ Common Css Files *************
     ************ -->
     <!-- Bootstrap css -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap.rtl.min.css">
 
     <!-- Icomoon Font Icons css -->
-    <link rel="stylesheet" href="/fonts/style.css">
+    <link rel="stylesheet" href="~/fonts/style.css">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="~/css/main-rtl.css">
 
-    <script src="~/js/jquery.min.js"></script>
+
+    <!--SweetAlert2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.min.css" integrity="sha512-Yn5Z4XxNnXXE8Y+h/H1fwG/2qax2MxG9GeUOWL6CYDCSp4rTFwUpOZ1PS6JOuZaPBawASndfrlWYx8RGKgILhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
     <!-- *************
         ************ Vendor Css Files *************
     ************ -->
     <!-- Mega Menu -->
-    <link rel="stylesheet" href="/vendor/megamenu/css/megamenu.css">
+    <link rel="stylesheet" href="~/vendor/megamenu/css/megamenu.css">
 
     <!-- Search Filter JS -->
-    <link rel="stylesheet" href="/vendor/search-filter/search-filter.css">
-    <link rel="stylesheet" href="/vendor/search-filter/custom-search-filter.css">
+    <link rel="stylesheet" href="~/vendor/search-filter/search-filter.css">
+    <link rel="stylesheet" href="~/vendor/search-filter/custom-search-filter.css">
 
-    <!--SweetAlert2-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.min.css" integrity="sha512-Yn5Z4XxNnXXE8Y+h/H1fwG/2qax2MxG9GeUOWL6CYDCSp4rTFwUpOZ1PS6JOuZaPBawASndfrlWYx8RGKgILhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Plugins Customization RTL -->
+    <link rel="stylesheet" href="~/css/plugins-rtl.css">
+
+    <script src="~/js/jquery.min.js"></script>
+
 
 </head>
 <body>
@@ -70,13 +76,13 @@
                         <ul class="header-actions">
 
 
-                            <li>
+                            <li class="dropdown">
                                 <a href="#" id="userSettings" class="user-settings" data-toggle="dropdown" aria-haspopup="true">
                                     <span>
-                                        <img src="/img/logo.png" alt="User Avatar" height="36">
+                                        <img src="~/img/logo.png" alt="User Avatar" height="36">
                                         <span class="status busy"></span>
                                     </span>
-                                </a>
+
                             </li>
                         </ul>
                         <!-- Header actions end -->
@@ -98,7 +104,7 @@
                 </div>
                 <!-- Content wrapper end -->
                 <!-- App Footer start -->
-                <div class="app-footer">Made with ❤️ by Mohammed Al-manea</div>
+                <div class="app-footer">© Uni Pro Admin 2021</div>
                 <!-- App footer end -->
 
             </div>
@@ -111,12 +117,6 @@
 
     </div>
     <!-- Page wrapper end -->
-    <!--SweetAlert2-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.min.js" integrity="sha512-dnyteqeKASHjUgi20CTeO5cfd1JwMTNV2ZS+tx5rlPCdWgnd6UKYNLM2EarSU9E6J3lMtMhUkcA6g8f3cAjoQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
     <!-- *************
         ************ Required JavaScript Files *************
     ************* -->
@@ -124,7 +124,6 @@
     <script src="~/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/modernizr.js"></script>
     <script src="~/js/moment.js"></script>
-
 
     <!-- *************
         ************ Vendor Js Files *************
@@ -137,11 +136,6 @@
     <script src="~/vendor/slimscroll/slimscroll.min.js"></script>
     <script src="~/vendor/slimscroll/custom-scrollbar.js"></script>
 
-
-    <!-- Bootstrap Select JS -->
-    <script src="~/vendor/bs-select/bs-select.min.js"></script>
-    <script src="~/vendor/bs-select/bs-select-custom.js"></script>
-
     <!-- Search Filter JS -->
     <script src="~/vendor/search-filter/search-filter.js"></script>
     <script src="~/vendor/search-filter/custom-search-filter.js"></script>
@@ -149,6 +143,13 @@
     <!-- Main Js Required -->
     <script src="~/js/main.js"></script>
 
+    <!-- Bootstrap Select JS -->
+    <script src="~/vendor/bs-select/bs-select.min.js"></script>
+    <script src="~/vendor/bs-select/bs-select-custom.js"></script>
+
+
+    <!--SweetAlert2-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.min.js" integrity="sha512-dnyteqeKASHjUgi20CTeO5cfd1JwMTNV2ZS+tx5rlPCdWgnd6UKYNLM2EarSU9E6J3lMtMhUkcA6g8f3cAjoQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
 </html>
-@RenderSection("scripts", required: false)
