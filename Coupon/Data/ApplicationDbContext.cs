@@ -17,5 +17,7 @@ namespace Coupon.Data
         public DbSet<VehicleMake> VehicleMakes { get; set; }
         public DbSet<VehicleModel> VehicleModels { get; set; }
         public DbSet<OTP> OTPs { get; set; }
+        public DbSet<VehicleBrand> VehicleBrands { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
     }
 }

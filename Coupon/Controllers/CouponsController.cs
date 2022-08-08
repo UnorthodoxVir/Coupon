@@ -43,6 +43,8 @@ namespace Coupon.Controllers
                 coupon.CompCoupon.Company = _companiesRepository.Get(coupon.CompCoupon.CompId);
             }
 
+            model.CouponCards = model.CouponCards.Where(o => o.CompCoupon.ExpireDate >= DateTime.Now).ToList();
+
             if (City != null && City != 78)
             {
                 model.CouponCards = model.CouponCards.Where(o => (int)o.CompCoupon.Company.City == City).ToList();

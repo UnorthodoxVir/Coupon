@@ -49,7 +49,7 @@ namespace Coupon.Services
 
         public async Task AuthenticatePhone(string code, string phone)
         {
-            var body = $@"الرمز الخاص بك هو {code}
+s            var body = $@"رمز التحقق الخاص بك هو {code}
 لاتشارك هذا الرمز مع احد";
 
             var baseAddress = new Uri("https://www.msegat.com");
