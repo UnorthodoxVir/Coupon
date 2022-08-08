@@ -7,6 +7,7 @@ namespace Coupon.ViewModel
     {
         public int? City { get; set; }
         public int? DiscountType { get; set; }
+        public float DiscountAmount { get; set; }
         public List<CouponCard> CouponCards { get; set; }
     }
 }

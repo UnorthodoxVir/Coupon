@@ -4,12 +4,17 @@
 <script src="~/js/re.js"></script>
 
 
+
+
 <!-- Row start -->
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
         <!-- Card start -->
         <div class="card">
+            <div class="card-header">
+                <h1>كوبونات كفاءة</h1>
+            </div>
             <div class="card-body">
 
                 <div class="custom-tabs-container">
@@ -21,7 +26,7 @@
                             <a class="nav-link" id="second-tab" data-bs-toggle="tab" href="#second" role="tab" aria-controls="second" aria-selected="false">كيف يمكنني الحصول على رمز الكوبون 🤔</a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="third-tab" data-bs-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">Third Tab</a>
+                            <a class="nav-link" id="third-tab" data-bs-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">كم عدد الورش التي تقدم خصومات في هذه القائمة 🤔 </a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -34,12 +39,12 @@
                         </div>
                         <div class="tab-pane fade" id="second" role="tabpanel">
 
-                            <h4 class="text-muter">عند الضغط على "الحصول على الرمز" سوف يتم طلب معلوماتك الشخصية, عند الانتهاء من ادخال المعلومات, سيتم ارسال رمز تحقق على رقم الجوال المدخل</h4>
-                            <h4 class="text-muter">بعد ادخال رمز التحقق, سنقوم بارسال رمز الكوبون على جوالك</h4>
+                            <h4 class="text-muter">عند الضغط على "الحصول على الرمز" سوف يتم طلب معلوماتك الشخصية, عند الانتهاء من ادخال المعلومات, سيتم ارسال رمز تحقق على رقم الجوال  المدخل للتأكد من صحته</h4>
+                            <h4 class="text-muter">بعد التحقق من رقم الجوال, سنقوم بارسال رمز الكوبون عليه</h4>
                         </div>
                         <div class="tab-pane fade" id="third" role="tabpanel">
 
-                            <p class="text-muter">User experience (UX) design is the process design teams use to create products that provide meaningful and relevant experiences to users. This involves the design of the entire process of acquiring and integrating the product, including aspects of branding, design, usability and function.</p>
+                            <h4 class="text-muter">يوجد أكثر من 60 ورشة تقدم خصومات حسب مجالها</h4>
 
                         </div>
                         <div class="tab-pane fade" id="fourth" role="tabpanel">
@@ -91,6 +96,29 @@
                                 <option selected value="78">الكل</option>
                             </select>
                             <div class="field-placeholder">المدينة</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <select asp-for="DiscountAmount" id="amount" class="form-select">
+                                <option selected value="1">الكل</option>
+                                <option value="2">&lt; 10% </option>
+                                <option value="3">&lt; 20% </option>
+                                <option value="4">&lt; 30% </option>
+                                <option value="5">&lt; 40% </option>
+                                <option value="6">&lt; 50% </option>
+                                <option value="7">&lt; 60% </option>
+                                <option value="8">&lt; 70% </option>
+                                <option value="9">&lt; 80% </option>
+                                <option value="10">&lt; 90% </option>
+                            </select>
+                            <div class="field-placeholder">مقدار الخصم</div>
                         </div>
                     </div>
 
@@ -149,7 +177,7 @@
                     <div class="discount emerald">
                         @item.CompCoupon.Discount%
                         <div class="type">
-                            تم استعماله
+                            خصم تلميع
                         </div>
                     </div>
                 }
@@ -218,7 +246,9 @@
 
     $(document).ready(function() {
 
-
+        $("#btnCreateCoupon").click(function() {
+            location.href = "/Coupons/Create"
+        })
 
         $("#btnCreate").click(function() {
 
