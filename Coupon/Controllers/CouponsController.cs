@@ -32,7 +32,7 @@ namespace Coupon.Controllers
         }
 
         // GET: CouponsController
-        public ActionResult Index(int? City, int? DiscountType)
+        public ActionResult Index(int? City, int? DiscountType, int DiscountAmount)
         {
             var model = new CouponsViewModel();
             model.CouponCards = _couponCardsRepository.List().ToList();
@@ -55,6 +55,11 @@ namespace Coupon.Controllers
                 model.CouponCards = model.CouponCards.Where(o=>(int)o.CompCoupon.DiscountType == DiscountType).ToList();
             }
 
+
+            if(DiscountAmount != 0)
+            {
+                model.CouponCards = model.CouponCards.Where(o => o.CompCoupon.Discount >= DiscountAmount).ToList();
+            }
 
             model.CouponCards = model.CouponCards.OrderBy(o => o.Used).ToList();
 
