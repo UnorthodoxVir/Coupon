@@ -12,9 +12,9 @@ namespace Coupon.Services
 
         public async void SendEmail()
         {
-            var client = new SendGridClient("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");
-            var from = new EmailAddress("no-reply@kafahh.com", "منصة كفاءة");
-            var _to = new EmailAddress("mo7ammedbinabdul@gmail.com");
+            var client = new SendGridClient("");
+            var from = new EmailAddress("", "");
+            var _to = new EmailAddress("");
 
             var msg = MailHelper.CreateSingleEmail(from, _to, "Email", "Text", "");
             var response = await client.SendEmailAsync(msg);
