@@ -24,7 +24,7 @@ namespace Coupon.Services
             values.Add("userName", "omarharbi");
             values.Add("numbers", phone);
             values.Add("userSender", "Kafahh");
-            values.Add("apiKey", "8e01b62fbeba876213250677cc7cbb05");
+            values.Add("apiKey", "----------");
             values.Add("msg", body);
 
 
